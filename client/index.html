@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VA Benefits Calculator | MesoGuide</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+    <link type="text/css" href="style.css" />
+    <style>
+      body {
+        margin: 0;
+      }
+      #topSection {
+        width: 100%;
+        min-height: 270px;
+        background-color:#106882;
+        margin: 0;
+        padding-top: 20px;
+      }
+      #topSection:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      .topSection-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        color: white;
+      }
+      .topSection-left {
+        float: left;
+        width: 70%;
+        font-family: 'Roboto', Arial, Arial, Helvetica, sans-serif;
+      }
+      .topSection-left h2 {
+        font-weight: 100;
+      }
+      .topSection-right {
+        float: right;
+        width: 20%;
+      }
+      .topSection-right img {
+        width: 100%;
+        margin-top: 25px;
+      }
+      #arrowSection {
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        clear: both;
+        background-color: #F5F5F5;
+        padding-top: 15px;
+        padding-bottom: 35px;
+        text-align: center;
+        border-bottom: 1px solid lightgray;
+        position: relative;
+        margin-bottom: 70px;
+      }
+      #arrowSection h2 {
+        margin: 0 0 5px;
+        font-size: 26px;
+      }
+      #arrowSection p {
+        margin: 5px 0 0px;
+        font-weight: 100;
+        font-size: 20px;
+      }
+      .arrow-down {
+        width: 0;
+        height: 0;
+        border-left: 40px solid transparent;
+        border-right: 40px solid transparent;
+        border-top: 40px solid lightgray;
+        position: absolute;
+        left: 47%;
+        bottom: -39px;
+      }
+      .arrow-down:after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 39px solid transparent;
+        border-right: 39px solid transparent;
+        border-top: 39px solid #F5F5F5;
+        position: absolute;
+        right: -39px;
+        bottom:1px;
+      }
+      #appContainer {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      #root {
+        clear: both;
+      }
+      .box {
+        box-sizing: border-box;
+        border: 1px solid #E3E3E3;
+        border-top: 12px solid #4B4B4B;
+        border-radius: 3px;
+        width: 100%;
+        height: 300px;
+        margin: 10px auto;
+        padding: 0px;
+        overflow: hidden;
+        transition: all .3s;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        position: relative;
+      }
+      .box.multiple {
+        height: 330px;
+      }
+      .hide {
+        height: 0px;
+        opacity: 0;
+        transition: transform .4s, opacity .4s;
+        transform: translateY(300px);
+      }
+      .hide .box {
+        display: none;
+      }
+      .show {
+        height: auto;
+        opacity: 1;
+        transition: transform .4s, opacity .4s;
+        transform: translateY(0px);
+      }
+      .box.little {
+        height: 95px;
+        transition: all .3s;
+        border: none;
+        border-bottom: 1px solid lightgray;
+      }
+      .smallBox {
+        margin-bottom: 100px;
+        padding: 20px 0;
+      }
+      .bigBox {
+        padding: 0 50px;
+      }
+      .smallBox.open,
+      .bigBox.open {
+        opacity: 1;
+        transition: opacity .3s;
+      }
+      .smallBox.closed,
+      .bigBox.closed {
+        opacity: 0;
+        transition: opacity .3s;
+      }
+      .explanationHeader {
+        padding: 0 10px;
+      }
+      .explanationText {
+        font-family: 'Roboto', Arial, Hevletica, sans-serif;
+        font-weight: 100;
+        font-size: 15px;
+        max-width: 700px;
+        margin-bottom: 22px;
+        padding: 0 10px;
+      }
+      .prevAnswerQuestion {
+        font-weight: 100;
+        font-size: 22px;
+        width: 50%;
+        float: left;
+      }
+      .prevAnswer {
+        float: right;
+        width: 50%;
+        text-align: right;
+      }
+      .prevAnswer p {
+        text-align: right;
+        transition: all .4s ease-in-out;
+        font-weight: bold;
+      }
+      .prevAnswer:hover p {
+        opacity: 1;
+        transform: translateX(-120px);
+      }
+      .prevAnswer:hover button {
+        transform: translateX(-120px);
+        opacity: 1;
+      }
+      .prevAnswer button {
+        transition: all .3s;
+        font-weight: 100;
+        opacity: 0;
+        position: absolute;
+        right: -200px;
+        transform: translateX(-120px);
+        top: 10px;
+        background-color: rgba(0,0,0,0);
+        color: black;
+        border: none;
+      }
+      .prevAnswer button:hover {
+        background-color: rgba(0,0,0,0);
+      }
+      button {
+        border: 1px solid lightgray;
+        border-radius: 3px;
+        height: 50px;
+        width: 250px;
+        margin: 10px;
+        font-size: 15px;
+        background-color: darkgray;
+        color: white;
+        transition: background-color .3s;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #056883;
+      }
+      .activeButton {
+        background-color: #434343;
+      }
+      .endPoint {
+        display: none;
+      }
+      #endPoint1 {
+        border: 1px solid lightgray;
+        max-width: 1000px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        border-radius: 3px;
+        position: relative;
+      }
+      .topForm {
+        padding: 80px;
+      }
+      #endPointHeaderText {
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+      }
+      #endPointFormText {
+        font-weight: 100;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+      #endPointFormParagraph {
+        font-weight: 100;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+      .endPointFormLeft {
+        width: 70%;
+        float: left;
+      }
+      .endPointFormRight {
+        width: 25%;
+        float: right;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        padding-top: 54px;
+        padding-bottom: 100px;
+      }
+      .endPointFormRight p {
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .lowerForm {
+        border-top: 1px solid #DFDFDF;
+        clear: both;
+        background-color: #F0F0F0;
+        padding: 80px;
+        padding-top: 0;
+      }
+      .lowerFormTop {
+        position: relative;
+        bottom: 50px;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+      }
+      .lowerFormTopLeft {
+        background: #434343;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        position: absolute;
+      }
+      .lowerFormTopRight {
+        padding-left: 100px;
+        width: 80%;
+      }
+      .lowerFormTopRight h3 {
+        margin-bottom: 40px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+      .lowerFormTopRight p {
+        font-weight: 100;
+        font-size: 14px;
+      }
+      .lowerFormBottom {
+        clear: both;
+        padding-left: 100px;
+        padding-right: 50px;
+      }
+      .lowerFormBottom:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      .inputBox {
+        width: 50%;
+        float: left;
+        padding-bottom: 15px;
+      }
+      .inputBox label {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 5px;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        font-weight: 500;
+      }
+      .inputBox input {
+        height: 30px;
+        width: 90%;
+      }
+      .goBackToVetCalc {
+        position: absolute;
+        top: -55px;
+        right: 0;
+        background: rgba(0,0,0,0);
+        color: gray;
+        font-weight: 100;
+        border: none;
+        text-align: right;
+      }
+      .goBackToVetCalc:hover {
+        background: rgba(0,0,0,0);
+        color: gray;
+      }
+      #endPointEstimatedBenefits {
+        font-weight: 100;
+        font-size: 30px;
+        margin-top: 0;
+      }
+      @media screen and (max-width: 1050px) {
+        #appContainer {
+          max-width: -webkit-fill-available;
+          width: 100%;
+          margin: 0 20px;
+        }
+      }
+      @media screen and (max-width: 681px) {
+        .box {
+          height: auto;
+        }
+        .box.little {
+          height: 120px;
+        }
+        .bigBox button {
+          width: 100%;
+          margin: 10px 0;
+        }
+        .smallBox {
+          margin-bottom: 40px;
+        }
+        .prevAnswerQuestion {
+          float: none;
+          width: 100%;
+        }
+        .prevAnswer {
+          float: none;
+          width: 100%;
+        }
+        .prevAnswer p {
+          text-align: left;
+        }
+        .prevAnswer button {
+          bottom: 15px;
+          top: unset;
+          opacity: 1;
+        }
+      }
+    </style>
+    <script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="topSection">
+      <div class="topSection-container">
+        <div class="topSection-left">
+          <h1>Morbi interdum. Shut the shizzle up potenti. Maecenas nisl.</h1>
+          <h2>Lorem hizzle dolor sit my shizz, consectetuer adipiscing elit. Nullizzle fo shizzle velizzle, da bomb volutpizzle, suscipit quizzle, gravida sheezy, pizzle. Break it down eget tortizzle.</h2>
+        </div>
+        <div class="topSection-right">
+          <img src="http://lorempizza.com/240/240" />
+        </div>
+      </div>
+    </div>
+    <div id="arrowSection">
+      <h2>See if You or a Loved One is Qualified</h2>
+      <p>Just answer a few questions below</p>
+      <div class="arrow-down"></div>
+    </div>
+    <div id="appContainer">
+      <div id="root">
+      </div>
+    </div>
+    <div id="endPoint1" class="endPoint">
+      <div class="topForm">
+        <div class="endPointFormLeft">
+          <h2 id="endPointHeaderText">Congratulations! You may be eligible for:</h2>
+          <p id="endPointFormText">
+            Sorry, you are not eligible
+          </p>
+          <p id="endPointFormParagraph">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          </p>
+        </div>
+        <div class="endPointFormRight">
+          <p>
+            Minimum estimated benefits
+          </p>
+          <p id="endPointEstimatedBenefits">
+            <span id="estimatedBenefitsNumber">100</span>/month
+          </p>
+        </div>
+      </div>
+      <div class="lowerForm">
+        <div class="lowerFormTop">
+          <div class="lowerFormTopLeft">
+            <div>
+
+            </div>
+          </div>
+          <div class="lowerFormTopRight">
+            <h3>Filing Can Be Tricky. Let Carl Help You Through It</h3>
+            <p>
+              We’ve streamlined the process of filing for VA benefits. With the help of our VA-accredited claims agent, retired LCDR Carl Jewett, veterans with mesothelioma can easily file for compensation and benefits. Commander Jewett has helped hundreds of veterans receive the compensation they deserve quickly and easily.
+            </p>
+          </div>
+        </div>
+        <div class="lowerFormBottom">
+          <form>
+            <div class="inputBox">
+              <label for="name">Name:</label>
+              <input type="text" name="name" />
+            </div>
+            <div class="inputBox">
+              <label for="diagnosis">Diagnosis:</label>
+              <input type="text" name="diagnosis" />
+            </div>
+            <div class="inputBox">
+              <label for="email">Email:</label>
+              <input type="text" name="email" />
+            </div>
+            <div class="inputBox">
+              <label for="phone">Phone:</label>
+              <input type="text" name="phone" />
+            </div>
+          </form>
+        </div>
+      </div>
+      <button class="goBackToVetCalc" type="submit">Go Back</button>
+    </div>
+  </body>
+  <script>
+  function animateValue(start, end) {
+      var range = end - start;
+      var current = start;
+      var increment = end > start? 1 : -1;
+      var obj = document.getElementById("estimatedBenefitsNumber");
+      var timer = setInterval(function() {
+          current += 4;
+          obj.innerHTML = current.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          if (current >= end) {
+              clearInterval(timer);
+          }
+      }, 1);
+  }
+    var enterEndPoint = function(endPointValue) {
+      $('#endPoint1').delay(500).fadeIn();
+      switch (endPointValue) {
+        case "endPoint1":
+          $('#endPointFormText').text("Sorry, you are not eligible for a VA Claim");
+          animateValue(1500, 3000);
+          break;
+        case "endPoint2":
+          $('#endPointFormText').text("You cannot file a VA Claim for exposure");
+          break;
+        case "endPoint3":
+          $('#endPointFormText').text("You qualify for YDAC - give Carl Jewett a call");
+          break;
+        case "endPoint4":
+          $('#endPointFormText').text("You qualify for Pension - give Carl Jewett a call");
+          break;
+        case "endPoint5":
+          $('#endPointFormText').text("You can receive compensation from asbestos trust funds. Contact Carl Jewett");
+          break;
+        case "endPoint6":
+          $('#endPointFormText').text("You may qualify for DIC. Contact Carl Jewett");
+          break;
+        case "endPoint7":
+          $('#endPointFormText').text("You may qualify for wartime pension. Give Carl Jewett a call.");
+          break;
+        default:
+          $('#endPointFormText').text("Contact Carl Jewett to receive more detailed information about your benefits");
+      }
+    };
+    $('.goBackToVetCalc').click(function(e){
+      e.preventDefault();
+      $('.endPoint').fadeOut();
+      $('#root').delay(500).fadeIn();
+    });
+  </script>
+</html>
